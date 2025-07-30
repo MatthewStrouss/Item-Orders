@@ -1,7 +1,7 @@
 import {Plugin, SettingsTypes} from "@highlite/plugin-api";
 import { PanelManager } from "@highlite/plugin-api";
 
-export class ItemOrders extends Plugin {
+export default class ItemOrders extends Plugin {
 	pluginName = 'Item Orders';
     author = 'Yoyo2324';
     private panelManager: PanelManager = new PanelManager();
