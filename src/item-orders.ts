@@ -68,6 +68,9 @@ export default class ItemOrders extends Plugin {
 
         // Close any open modal
         this.closeModal();
+        this.panelManager.removeMenuItem(
+                '🏛️'
+            );
 
         // Reset loaded states
         this.itemsLoaded = false;
