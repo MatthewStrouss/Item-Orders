@@ -36,14 +36,8 @@ export default class ItemOrders extends Plugin {
         }
     }
 
-    stop(): void {}
-
     init(): void {
         this.log('Item Orders Panel initialized');
-    }
-
-    SocketManager_loggedIn(): void {
-        this.start();
     }
 
     private checkLoginStatus(): void {
@@ -62,7 +56,7 @@ export default class ItemOrders extends Plugin {
         this.updateId = setInterval(() => {this.updateOrders();}, 30000);
     }
 
-    SocketManager_handleLoggedOut(): void {
+    stop(): void {
         // Mark as logged out
         this.isLoggedIn = false;
 
