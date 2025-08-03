@@ -190,12 +190,18 @@ export default class ItemOrders extends Plugin {
         amountInput.name = 'amount';
         amountInput.id = 'orderAmount';
         amountInput.placeholder = 'Amount';
+        amountInput.min = "0";
+        amountInput.step = "1";
+        amountInput.oninput = () => {if (parseFloat(amountInput.value) < 0) amountInput.value = "0";}
 
         let priceInput = document.createElement('input');
         priceInput.type = 'number';
         priceInput.name = 'price';
         priceInput.id = 'orderPrice';
         priceInput.placeholder = 'Price (per item)';
+        priceInput.min = "0";
+        priceInput.step = "1";
+        priceInput.oninput = () => {if (parseFloat(priceInput.value) < 0) priceInput.value = "0";}
 
         this.orderInput.appendChild(this.orderInputSkill);
         this.orderInput.appendChild(this.orderInputCategory);
@@ -867,7 +873,7 @@ export default class ItemOrders extends Plugin {
                 "&amount=" + orderAmount + "&price=" + orderPrice + 
                 "&x=" + orderX + "&y=" + orderY + "&z=" + orderZ)
             .then((response) => response.text())
-            .then((result) => this.log(result))
+            .then((result) => this.updateOrders())
             .catch((error) => this.error(error));
         }
     }
@@ -925,6 +931,9 @@ export default class ItemOrders extends Plugin {
                 amountInput.name = "amount";
                 amountInput.className = "item-orders-item-text-input";
                 amountInput.placeholder = "Amount delivered";
+                amountInput.min = "0";
+                amountInput.step = "1";
+                amountInput.oninput = () => {if (parseFloat(amountInput.value) < 0) amountInput.value = "0";}
 
                 let updateOrderBtn = document.createElement('button');
                 updateOrderBtn.textContent = 'Update Order';
