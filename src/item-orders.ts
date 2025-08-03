@@ -258,8 +258,6 @@ export default class ItemOrders extends Plugin {
             }
             case "range": {
                 this.orderInputCategory.innerHTML = `
-                    <option value ="arrows">Arrows</option>
-                    <option value ="bows">Bows</option>
                     <option value ="rangeEquipment">Equipment</option>
                 `;
                 break;
