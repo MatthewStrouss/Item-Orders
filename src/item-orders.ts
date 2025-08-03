@@ -307,7 +307,7 @@ export default class ItemOrders extends Plugin {
             }
             case "forestry": {
                 this.orderInputCategory.innerHTML = `
-                    <option value ="Trees">Trees</option>
+                    <option value ="trees">Trees</option>
                     <option value ="forestryEquipment">Equipment</option>
                 `;
                 break;
