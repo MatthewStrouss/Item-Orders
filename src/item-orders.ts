@@ -334,13 +334,6 @@ export default class ItemOrders extends Plugin {
             case "smithing": {
                 this.orderInputCategory.innerHTML = `
                     <option value ="bars">Bars</option>
-                    <option value ="weaponry">Weaponry</option>
-                    <option value ="helmets">Helmets</option>
-                    <option value ="bodyArmour">Body Armour</option>
-                    <option value ="legArmour">Leg Armour</option>
-                    <option value ="shields">Shields</option>
-                    <option value ="gloves">Gloves</option>
-                    <option value ="tools">Tools</option>
                     <option value ="miscellaneous">Miscellaneous</option>
                 `;
                 break;
