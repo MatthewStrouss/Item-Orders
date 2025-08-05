@@ -10,11 +10,13 @@ export default class ItemOrders extends Plugin {
 
     private panelContent: HTMLElement | null = null;
     private itemListContainer: HTMLDivElement | null = null;
+    private orderContainer: HTMLDivElement | null = null;
     private orderInput: HTMLDivElement | null = null;
     private orderInputSkill: HTMLSelectElement | null = null;
     private orderInputCategory: HTMLSelectElement | null = null;
     private orderInputItem: HTMLSelectElement | null = null;
     private orderBtn: HTMLElement | null = null;
+    private searchBtn: HTMLElement | null = null;
     private modalOverlay: HTMLDivElement | null = null;
     private isLoggedIn: boolean = false;
     private updateId: undefined | ReturnType<typeof setInterval>;
@@ -112,16 +114,45 @@ export default class ItemOrders extends Plugin {
 
         this.panelContent.innerHTML = '';
 
-        // Create search bar
-        const orderContainer = document.createElement('div');
-        orderContainer.className = 'item-orders-request-container';
-        this.panelContent.appendChild(orderContainer);
+        // Create order bar
+        this.orderContainer = document.createElement('div');
+        this.orderContainer.className = 'item-orders-request-container';
+        this.panelContent.appendChild(this.orderContainer);
 
         this.orderInput = document.createElement('div');
+        this.orderInput.className = 'item-orders-order-buttons-container';
+        
+        
+        this.orderBtn = document.createElement('button');
+        this.orderBtn.textContent = '➕';
+        this.orderBtn.onclick = () => this.openOrderPanel();
+        this.orderInput.appendChild(this.orderBtn);
+
+        this.searchBtn = document.createElement('button');
+        this.searchBtn.textContent = '🔍';
+        // this.searchBtn.onclick = () => this.submitOrder();
+        this.orderInput.appendChild(this.searchBtn);
+
+        this.orderContainer.appendChild(this.orderInput);
+
+        // Create item list container wrapper
+        const listWrapper = document.createElement('div');
+        listWrapper.className = 'item-panel-list-wrapper';
+        this.panelContent.appendChild(listWrapper);
+
+        this.itemListContainer = document.createElement('div');
+        this.itemListContainer.className = 'items-orders-list-container';
+        listWrapper.appendChild(this.itemListContainer);
+
+        // Show loading state initially
+        this.showLoadingState();
+    }
+
+    private openOrderPanel(): void {
+        if (!this.orderInput || !this.orderContainer) return;
+        
+        this.orderInput.innerHTML = "";
         this.orderInput.className = 'item-orders-order-input-container';
-        this.orderInput.innerHTML = `
-            <h3>Request items:</h3>
-        `;
         this.orderInputSkill = document.createElement('select');
         this.orderInputSkill.name = 'orderSkill';
         this.orderInputSkill.id = 'orderSkill';
@@ -213,19 +244,7 @@ export default class ItemOrders extends Plugin {
         this.orderBtn.textContent = 'Submit Order';
         this.orderBtn.onclick = () => this.submitOrder();
         this.orderInput.appendChild(this.orderBtn);
-        orderContainer.appendChild(this.orderInput);
-
-        // Create item list container wrapper
-        const listWrapper = document.createElement('div');
-        listWrapper.className = 'item-panel-list-wrapper';
-        this.panelContent.appendChild(listWrapper);
-
-        this.itemListContainer = document.createElement('div');
-        this.itemListContainer.className = 'items-orders-list-container';
-        listWrapper.appendChild(this.itemListContainer);
-
-        // Show loading state initially
-        this.showLoadingState();
+        this.orderContainer.appendChild(this.orderInput);
     }
 
     private updateOrderCategoryInput(): void {
@@ -850,7 +869,7 @@ export default class ItemOrders extends Plugin {
     }
 
     private submitOrder(): void {
-        if (!this.orderInputSkill || ! this.orderInputCategory || !this.orderInputItem) return;
+        if (!this.orderInputSkill || ! this.orderInputCategory || !this.orderInputItem || !this.orderInput) return;
         if (this.isLoggedIn == false) {
             if (!this.orderInput) return;
             this.orderInput.innerHTML = `
@@ -868,6 +887,19 @@ export default class ItemOrders extends Plugin {
             let orderY = this.gameHooks.EntityManager.Instance.MainPlayer.CurrentMapLevel;
             let orderZ = playerMapPos.Z;
             this.log('Sending order request!');
+
+            this.orderInput.innerHTML = "";
+            this.orderInput.className = 'item-orders-order-buttons-container';
+            this.orderBtn = document.createElement('button');
+            this.orderBtn.textContent = '➕';
+            this.orderBtn.onclick = () => this.openOrderPanel();
+            this.orderInput.appendChild(this.orderBtn);
+
+            this.searchBtn = document.createElement('button');
+            this.searchBtn.textContent = '🔍';
+            // this.searchBtn.onclick = () => this.submitOrder();
+            this.orderInput.appendChild(this.searchBtn);
+
             fetch("https://highspellwoodcuttersunion.online/register_order.php/?username=" + username + 
                 "&skill=" + this.orderInputSkill.value + "&category=" + this.orderInputCategory.value + "&type=" + this.orderInputItem.value +
                 "&amount=" + orderAmount + "&price=" + orderPrice + 
@@ -1003,6 +1035,18 @@ export default class ItemOrders extends Plugin {
                 width: 100%;
                 padding: 10px 15px;
                 margin: 5px 0px;
+                background: rgba(0, 0, 0, 0.5);
+                border: 1px solid #555;
+                border-radius: 4px;
+                color: white;
+                font-size: 14px;
+                box-sizing: border-box;
+            }
+
+            .item-orders-order-buttons-container button {
+                width: 40%;
+                padding: 10px 15px;
+                margin: 5px 5px;
                 background: rgba(0, 0, 0, 0.5);
                 border: 1px solid #555;
                 border-radius: 4px;
